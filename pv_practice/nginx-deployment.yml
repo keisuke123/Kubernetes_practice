@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-host
+  template:
+    metadata:
+      labels:
+        app: nginx-host
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: mydata
+      volumes:
+        - name: mydata
+          persistentVolumeClaim:
+            claimName: nfs001-pvc
+            
